@@ -1,43 +1,74 @@
 body{
-font-family:Arial;
-background:linear-gradient(135deg,#667eea,#764ba2);
-height:100vh;
+margin:0;
+font-family: 'Segoe UI', sans-serif;
+background:#eef2ea;
 display:flex;
 justify-content:center;
 align-items:center;
-margin:0;
+height:100vh;
 }
 
-.container{
+.app{
+width:420px;
+text-align:center;
+}
+
+.title{
+letter-spacing:2px;
+margin-bottom:20px;
+}
+
+.card{
 background:white;
-padding:30px;
-border-radius:15px;
-width:350px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
-
-input{
-padding:10px;
-margin:5px;
-width:70%;
+padding:25px;
+border-radius:12px;
+box-shadow:0 8px 25px rgba(0,0,0,0.15);
 }
 
 button{
-padding:10px;
-background:#667eea;
-color:white;
+width:100%;
+padding:12px;
+margin:8px 0;
 border:none;
+background:#5f7f68;
+color:white;
 border-radius:8px;
 cursor:pointer;
 }
 
-li{
-margin:8px 0;
+input, textarea{
+width:100%;
 padding:10px;
-background:#f4f4f4;
+margin:8px 0;
 border-radius:8px;
+border:1px solid #ccc;
 }
 
-.important{
-border-left:5px solid red;
+textarea{
+resize:none;
+height:70px;
+}
+
+.checkRow{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:10px;
+}
+
+.hidden{
+display:none;
+}
+
+ul{
+list-style:none;
+padding:0;
+}
+
+li{
+background:#f3f3f3;
+margin:8px 0;
+padding:10px;
+border-radius:8px;
+text-align:left;
 }
