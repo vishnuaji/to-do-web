@@ -1,29 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Shared Todo</title>
+<title>Daily Planner</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
-<h1>Todo List</h1>
+<div class="app">
 
-<label>Select Date:</label>
-<input type="date" id="datePicker">
+<h1 class="title">DAILY PLANNER</h1>
 
-<br><br>
+<!-- HOME SCREEN -->
+<div id="homeScreen" class="card">
+<button onclick="showAddTask()">Add Task</button>
+<button onclick="showViewTask()">View Tasks</button>
+</div>
 
-<input id="taskInput" placeholder="Enter task">
+<!-- ADD TASK SCREEN -->
+<div id="addScreen" class="card hidden">
 
-<label>
-<input type="checkbox" id="importantCheck"> Important
+<h2>Add Task</h2>
+
+<input id="taskTitle" placeholder="Task Title">
+<textarea id="taskDesc" placeholder="Task Description"></textarea>
+
+<label>Due Date</label>
+<input type="date" id="taskDate">
+
+<label class="checkRow">
+<input type="checkbox" id="taskImportant"> Important
 </label>
 
-<button onclick="addTask()">Add Task</button>
+<button onclick="addTask()">Save Task</button>
+<button onclick="goHome()">Back</button>
+
+</div>
+
+<!-- VIEW TASK SCREEN -->
+<div id="viewScreen" class="card hidden">
+
+<h2>View Tasks</h2>
+
+<input type="date" id="viewDate">
+
+<button onclick="loadTasks()">Load Tasks</button>
 
 <ul id="taskList"></ul>
+
+<button onclick="goHome()">Back</button>
+
+</div>
 
 </div>
 
