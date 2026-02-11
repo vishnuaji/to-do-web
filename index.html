@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Shared Todo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+<h1>🌍 Shared Todo</h1>
+
+<input id="taskInput" placeholder="Enter task">
+<label>
+<input type="checkbox" id="importantCheck"> Important
+</label>
+
+<button onclick="addTask()">Add Task</button>
+
+<ul id="taskList"></ul>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
