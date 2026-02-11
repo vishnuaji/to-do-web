@@ -10,56 +10,76 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const datePicker = document.getElementById("datePicker");
+const homeScreen = document.getElementById("homeScreen");
+const addScreen = document.getElementById("addScreen");
+const viewScreen = document.getElementById("viewScreen");
 
-// Set default date = today
-const today = new Date().toISOString().split("T")[0];
-datePicker.value = today;
+function showAddTask(){
+homeScreen.classList.add("hidden");
+addScreen.classList.remove("hidden");
+}
 
-// Reload tasks when date changes
-datePicker.addEventListener("change", loadTasks);
+function showViewTask(){
+homeScreen.classList.add("hidden");
+viewScreen.classList.remove("hidden");
+}
 
-function getSelectedDate(){
- return datePicker.value;
+function goHome(){
+addScreen.classList.add("hidden");
+viewScreen.classList.add("hidden");
+homeScreen.classList.remove("hidden");
 }
 
 function addTask(){
-let text=document.getElementById("taskInput").value;
-let important=document.getElementById("importantCheck").checked;
 
-if(!text) return;
+let title=document.getElementById("taskTitle").value;
+let desc=document.getElementById("taskDesc").value;
+let date=document.getElementById("taskDate").value;
+let important=document.getElementById("taskImportant").checked;
+
+if(!title || !date){
+alert("Title and Date required");
+return;
+}
 
 db.collection("tasks").add({
- text:text,
- important:important,
- date:getSelectedDate(),   // NEW
- created:new Date()
+title,
+description:desc,
+dueDate:date,
+important,
+completed:false,
+created:new Date()
 });
 
-document.getElementById("taskInput").value="";
+alert("Task Saved");
+goHome();
 }
 
 function loadTasks(){
 
-let selectedDate = getSelectedDate();
+let date=document.getElementById("viewDate").value;
+if(!date){
+alert("Select date");
+return;
+}
 
 db.collection("tasks")
-.where("date","==",selectedDate)
-.orderBy("created")
+.where("dueDate","==",date)
 .onSnapshot(snapshot=>{
 
 let list=document.getElementById("taskList");
 list.innerHTML="";
 
 snapshot.forEach(doc=>{
+
 let t=doc.data();
 
 let li=document.createElement("li");
-if(t.important) li.classList.add("important");
 
-li.innerHTML=`
-${t.text}
-<button onclick="deleteTask('${doc.id}')">❌</button>
+li.innerHTML = `
+<b>${t.title}</b><br>
+${t.description || ""}<br>
+Important: ${t.important ? "Yes" : "No"}
 `;
 
 list.appendChild(li);
@@ -67,12 +87,22 @@ list.appendChild(li);
 });
 
 });
-
 }
 
-function deleteTask(id){
-db.collection("tasks").doc(id).delete();
-}
+checkImportantToday();
 
-// Initial load
-loadTasks();
+function checkImportantToday(){
+
+let today = new Date().toISOString().split("T")[0];
+
+db.collection("tasks")
+.where("dueDate","==",today)
+.where("important","==",true)
+.where("completed","==",false)
+.get()
+.then(snapshot=>{
+if(!snapshot.empty){
+alert("You have important tasks pending today!");
+}
+});
+}
