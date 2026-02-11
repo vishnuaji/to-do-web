@@ -16,7 +16,7 @@ const homeScreen = document.getElementById("homeScreen");
 const addScreen = document.getElementById("addScreen");
 const viewScreen = document.getElementById("viewScreen");
 
-// ================= NAVIGATION FUNCTIONS (GLOBAL) =================
+// ================= NAVIGATION =================
 
 window.showAddTask = function () {
   homeScreen.classList.add("hidden");
@@ -49,17 +49,16 @@ window.addTask = function () {
   }
 
   db.collection("tasks").add({
-    title: title,
+    title,
     description: desc,
     dueDate: date,
-    important: important,
+    important,
     completed: false,
     created: new Date()
   });
 
   alert("Task Saved Successfully");
 
-  // Reset form
   document.getElementById("taskTitle").value = "";
   document.getElementById("taskDesc").value = "";
   document.getElementById("taskDate").value = "";
@@ -92,10 +91,24 @@ window.loadTasks = function () {
 
         let li = document.createElement("li");
 
+        if (t.completed) {
+          li.style.opacity = "0.6";
+          li.style.textDecoration = "line-through";
+        }
+
         li.innerHTML = `
           <b>${t.title}</b><br>
           ${t.description || ""}<br>
-          Important: ${t.important ? "Yes" : "No"}
+          Important: ${t.important ? "Yes" : "No"}<br><br>
+
+          <button onclick="toggleComplete('${doc.id}', ${t.completed})">
+            ${t.completed ? "Undo" : "Mark Completed"}
+          </button>
+
+          <button onclick="deleteTask('${doc.id}')"
+                  style="background:#cc4444;margin-top:6px;">
+            Delete
+          </button>
         `;
 
         list.appendChild(li);
@@ -105,7 +118,31 @@ window.loadTasks = function () {
     });
 };
 
-// ================= IMPORTANT TASK ALERT =================
+// ================= TOGGLE COMPLETE =================
+
+window.toggleComplete = function (taskId, currentStatus) {
+
+  db.collection("tasks")
+    .doc(taskId)
+    .update({
+      completed: !currentStatus
+    });
+
+};
+
+// ================= DELETE TASK =================
+
+window.deleteTask = function (taskId) {
+
+  if (!confirm("Delete this task?")) return;
+
+  db.collection("tasks")
+    .doc(taskId)
+    .delete();
+
+};
+
+// ================= IMPORTANT ALERT =================
 
 function checkImportantToday() {
 
@@ -119,12 +156,11 @@ function checkImportantToday() {
     .then(snapshot => {
 
       if (!snapshot.empty) {
-        alert("You have IMPORTANT tasks pending today!");
+        alert("⚠ You have IMPORTANT tasks pending today!");
       }
 
     });
 
 }
 
-// Run alert check when page loads
 checkImportantToday();
