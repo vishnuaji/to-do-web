@@ -10,6 +10,19 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+const datePicker = document.getElementById("datePicker");
+
+// Set default date = today
+const today = new Date().toISOString().split("T")[0];
+datePicker.value = today;
+
+// Reload tasks when date changes
+datePicker.addEventListener("change", loadTasks);
+
+function getSelectedDate(){
+ return datePicker.value;
+}
+
 function addTask(){
 let text=document.getElementById("taskInput").value;
 let important=document.getElementById("importantCheck").checked;
@@ -19,6 +32,7 @@ if(!text) return;
 db.collection("tasks").add({
  text:text,
  important:important,
+ date:getSelectedDate(),   // NEW
  created:new Date()
 });
 
@@ -26,9 +40,14 @@ document.getElementById("taskInput").value="";
 }
 
 function loadTasks(){
+
+let selectedDate = getSelectedDate();
+
 db.collection("tasks")
+.where("date","==",selectedDate)
 .orderBy("created")
 .onSnapshot(snapshot=>{
+
 let list=document.getElementById("taskList");
 list.innerHTML="";
 
@@ -44,12 +63,16 @@ ${t.text}
 `;
 
 list.appendChild(li);
+
 });
+
 });
+
 }
 
 function deleteTask(id){
 db.collection("tasks").doc(id).delete();
 }
 
+// Initial load
 loadTasks();
