@@ -8,9 +8,15 @@
 <body>
 
 <div class="container">
-<h1>🌍 Shared Todo</h1>
+<h1>Todo List</h1>
+
+<label>Select Date:</label>
+<input type="date" id="datePicker">
+
+<br><br>
 
 <input id="taskInput" placeholder="Enter task">
+
 <label>
 <input type="checkbox" id="importantCheck"> Important
 </label>
@@ -18,6 +24,7 @@
 <button onclick="addTask()">Add Task</button>
 
 <ul id="taskList"></ul>
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
