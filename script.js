@@ -14,122 +14,155 @@ const homeScreen = document.getElementById("homeScreen");
 const addScreen = document.getElementById("addScreen");
 const viewScreen = document.getElementById("viewScreen");
 
-window.showAddTask = function(){
+/* ========= TOAST ========= */
+function showToast(message){
+ let toast = document.createElement("div");
+ toast.className = "toast-box";
+ toast.innerText = message;
+ document.body.appendChild(toast);
+ setTimeout(()=>toast.remove(),3000);
+}
+
+/* ========= NAVIGATION ========= */
+window.showAddTask = ()=>{
  homeScreen.classList.add("d-none");
  addScreen.classList.remove("d-none");
 };
 
-window.showViewTask = function(){
+window.showViewTask = ()=>{
  homeScreen.classList.add("d-none");
  viewScreen.classList.remove("d-none");
 };
 
-window.goHome = function(){
+window.goHome = ()=>{
  addScreen.classList.add("d-none");
  viewScreen.classList.add("d-none");
  homeScreen.classList.remove("d-none");
 };
 
-window.addTask = function(){
+/* ========= ADD TASK ========= */
+window.addTask = ()=>{
 
- let title = document.getElementById("taskTitle").value;
- let desc = document.getElementById("taskDesc").value;
- let date = document.getElementById("taskDate").value;
- let important = document.getElementById("taskImportant").checked;
+ let title=document.getElementById("taskTitle").value;
+ let desc=document.getElementById("taskDesc").value;
+ let date=document.getElementById("taskDate").value;
+ let important=document.getElementById("taskImportant").checked;
 
- if(!title || !date){
-  alert("Title and Date required");
+ if(!title||!date){
+  showToast("Title and Date required");
   return;
  }
 
  db.collection("tasks").add({
   title,
-  description: desc,
-  dueDate: date,
+  description:desc,
+  dueDate:date,
   important,
   completed:false,
   created:new Date()
  });
 
- alert("Task Saved");
+ showToast("Task Saved");
  goHome();
 };
 
-window.loadTasks = function(){
+/* ========= LOAD TASKS ========= */
+window.loadTasks = ()=>{
 
- let date = document.getElementById("viewDate").value;
- if(!date){ alert("Select date"); return; }
+ let date=document.getElementById("viewDate").value;
+ if(!date){ showToast("Select date"); return; }
 
  db.collection("tasks")
  .where("dueDate","==",date)
- .onSnapshot(snapshot=>{
+ .get()
+ .then(snapshot=>{
 
-  let list = document.getElementById("taskList");
-  list.innerHTML = "";
+   let list=document.getElementById("taskList");
+   list.innerHTML="";
 
-  snapshot.forEach(doc=>{
+   let tasks=[];
+   snapshot.forEach(doc=>{
+     tasks.push({id:doc.id,...doc.data()});
+   });
 
-   let t = doc.data();
+   /* ===== SMART SORT ===== */
+   tasks.sort((a,b)=>{
+     if(a.important&&!b.important) return -1;
+     if(!a.important&&b.important) return 1;
+     if(!a.completed&&b.completed) return -1;
+     if(a.completed&&!b.completed) return 1;
+     return 0;
+   });
 
-   let li = document.createElement("li");
-   li.className = "border rounded p-2 mb-2 bg-light";
+   let total=0, completed=0, importantPending=0;
+   let today=new Date().toISOString().split("T")[0];
 
-   if(t.completed){
-    li.style.opacity="0.6";
-    li.style.textDecoration="line-through";
-   }
+   tasks.forEach(t=>{
 
-   li.innerHTML = `
-    <b>${t.title}</b><br>
-    ${t.description || ""}<br>
-    Important: ${t.important ? "Yes":"No"}<br><br>
-   `;
+     total++;
+     if(t.completed) completed++;
+     if(t.important&&!t.completed) importantPending++;
 
-   let completeBtn = document.createElement("button");
-   completeBtn.className = "btn btn-sm btn-success me-2";
-   completeBtn.innerText = t.completed ? "Undo":"Complete";
-   completeBtn.onclick = ()=> toggleComplete(doc.id, t.completed);
+     let li=document.createElement("li");
+     li.className="border rounded p-2 mb-2 bg-light";
 
-   let deleteBtn = document.createElement("button");
-   deleteBtn.className = "btn btn-sm btn-danger";
-   deleteBtn.innerText = "Delete";
-   deleteBtn.onclick = ()=> deleteTask(doc.id);
+     if(t.completed) li.classList.add("task-completed");
+     if(t.important) li.classList.add("task-important");
+     if(!t.completed&&t.dueDate<today) li.classList.add("task-overdue");
 
-   li.appendChild(completeBtn);
-   li.appendChild(deleteBtn);
+     li.innerHTML=`
+       <b>${t.title}</b><br>
+       ${t.description||""}<br>
+       Important: ${t.important?"Yes":"No"}<br><br>
+     `;
 
-   list.appendChild(li);
+     let completeBtn=document.createElement("button");
+     completeBtn.className="btn btn-sm btn-success me-2";
+     completeBtn.innerText=t.completed?"Undo":"Complete";
+     completeBtn.onclick=()=>toggleComplete(t.id,t.completed);
 
-  });
+     let deleteBtn=document.createElement("button");
+     deleteBtn.className="btn btn-sm btn-danger";
+     deleteBtn.innerText="Delete";
+     deleteBtn.onclick=()=>deleteTask(t.id);
+
+     li.appendChild(completeBtn);
+     li.appendChild(deleteBtn);
+     list.appendChild(li);
+   });
+
+   document.getElementById("statTotal").innerText=total;
+   document.getElementById("statCompleted").innerText=completed;
+   document.getElementById("statImportant").innerText=importantPending;
 
  });
-
 };
 
-window.toggleComplete = function(id,current){
- db.collection("tasks").doc(id).update({ completed: !current });
+/* ========= COMPLETE ========= */
+window.toggleComplete=(id,current)=>{
+ db.collection("tasks").doc(id).update({completed:!current});
 };
 
-window.deleteTask = function(id){
- if(!confirm("Delete task?")) return;
- db.collection("tasks").doc(id).delete();
+/* ========= DELETE ========= */
+window.deleteTask=id=>{
+ if(confirm("Delete task?")){
+  db.collection("tasks").doc(id).delete();
+ }
 };
 
+/* ========= IMPORTANT ALERT ========= */
 function checkImportantToday(){
-
- let today = new Date().toISOString().split("T")[0];
-
+ let today=new Date().toISOString().split("T")[0];
  db.collection("tasks")
  .where("dueDate","==",today)
  .where("important","==",true)
  .where("completed","==",false)
  .get()
  .then(s=>{
-  if(!s.empty){
-   alert("⚠ Important tasks pending today!");
-  }
+   if(!s.empty){
+    showToast("⚠ Important tasks pending today!");
+   }
  });
-
 }
-
 checkImportantToday();
+
