@@ -86,4 +86,18 @@ text-align:left;
   background: #1e90ff;
   border-radius: 10px;
 }
+.btn-primary,
+.btn-success,
+.btn-secondary {
+  background-color: #1e90ff !important;
+  border-color: #1e90ff !important;
+}
+
+.btn-primary:hover,
+.btn-success:hover,
+.btn-secondary:hover {
+  background-color: #187bcd !important;
+  border-color: #187bcd !important;
+}
+
 
