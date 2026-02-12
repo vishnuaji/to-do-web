@@ -14,50 +14,53 @@ const homeScreen = document.getElementById("homeScreen");
 const addScreen = document.getElementById("addScreen");
 const viewScreen = document.getElementById("viewScreen");
 
-/* ========= TOAST ========= */
-function showToast(message){
- let toast = document.createElement("div");
- toast.className = "toast-box";
- toast.innerText = message;
- document.body.appendChild(toast);
- setTimeout(()=>toast.remove(),3000);
+/* ===== TOAST ===== */
+function showToast(msg){
+ let t=document.createElement("div");
+ t.className="toast-box";
+ t.innerText=msg;
+ document.body.appendChild(t);
+ setTimeout(()=>t.remove(),3000);
 }
 
-/* ========= NAVIGATION ========= */
-window.showAddTask = ()=>{
+/* ===== NAV ===== */
+window.showAddTask=()=>{
  homeScreen.classList.add("d-none");
  addScreen.classList.remove("d-none");
 };
 
-window.showViewTask = ()=>{
+window.showViewTask=()=>{
  homeScreen.classList.add("d-none");
  viewScreen.classList.remove("d-none");
 };
 
-window.goHome = ()=>{
+window.goHome=()=>{
  addScreen.classList.add("d-none");
  viewScreen.classList.add("d-none");
  homeScreen.classList.remove("d-none");
 };
 
-/* ========= ADD TASK ========= */
-window.addTask = ()=>{
+/* ===== ADD TASK ===== */
+window.addTask=()=>{
 
  let title=document.getElementById("taskTitle").value;
  let desc=document.getElementById("taskDesc").value;
  let rawDate=document.getElementById("taskDate").value;
- let date=new Date(rawDate).toISOString().split("T")[0];
  let important=document.getElementById("taskImportant").checked;
 
- if(!title||!date){
+ if(!title||!rawDate){
   showToast("Title and Date required");
   return;
  }
 
+ let dueTS=firebase.firestore.Timestamp.fromDate(
+  new Date(rawDate+"T00:00:00")
+ );
+
  db.collection("tasks").add({
   title,
   description:desc,
-  dueDate:date,
+  dueDate:dueTS,
   important,
   completed:false,
   created:new Date()
@@ -67,14 +70,24 @@ window.addTask = ()=>{
  goHome();
 };
 
-/* ========= LOAD TASKS ========= */
-window.loadTasks = ()=>{
+/* ===== LOAD TASKS ===== */
+window.loadTasks=()=>{
 
- let date=document.getElementById("viewDate").value;
- if(!date){ showToast("Select date"); return; }
+ let rawDate=document.getElementById("viewDate").value;
+ if(!rawDate){ showToast("Select date"); return; }
+
+ let start=new Date(rawDate);
+ start.setHours(0,0,0,0);
+
+ let end=new Date(rawDate);
+ end.setHours(23,59,59,999);
+
+ let startTS=firebase.firestore.Timestamp.fromDate(start);
+ let endTS=firebase.firestore.Timestamp.fromDate(end);
 
  db.collection("tasks")
- .where("dueDate","==",date)
+ .where("dueDate",">=",startTS)
+ .where("dueDate","<=",endTS)
  .get()
  .then(snapshot=>{
 
@@ -86,7 +99,6 @@ window.loadTasks = ()=>{
      tasks.push({id:doc.id,...doc.data()});
    });
 
-   /* ===== SMART SORT ===== */
    tasks.sort((a,b)=>{
      if(a.important&&!b.important) return -1;
      if(!a.important&&b.important) return 1;
@@ -95,8 +107,8 @@ window.loadTasks = ()=>{
      return 0;
    });
 
-   let total=0, completed=0, importantPending=0;
-   let today=new Date().toISOString().split("T")[0];
+   let total=0,completed=0,importantPending=0;
+   let today=new Date();
 
    tasks.forEach(t=>{
 
@@ -109,7 +121,11 @@ window.loadTasks = ()=>{
 
      if(t.completed) li.classList.add("task-completed");
      if(t.important) li.classList.add("task-important");
-     if(!t.completed&&t.dueDate<today) li.classList.add("task-overdue");
+
+     let dueDate=t.dueDate.toDate();
+     if(!t.completed && dueDate < today){
+       li.classList.add("task-overdue");
+     }
 
      li.innerHTML=`
        <b>${t.title}</b><br>
@@ -117,19 +133,20 @@ window.loadTasks = ()=>{
        Important: ${t.important?"Yes":"No"}<br><br>
      `;
 
-     let completeBtn=document.createElement("button");
-     completeBtn.className="btn btn-sm btn-success me-2";
-     completeBtn.innerText=t.completed?"Undo":"Complete";
-     completeBtn.onclick=()=>toggleComplete(t.id,t.completed);
+     let cBtn=document.createElement("button");
+     cBtn.className="btn btn-sm btn-success me-2";
+     cBtn.innerText=t.completed?"Undo":"Complete";
+     cBtn.onclick=()=>toggleComplete(t.id,t.completed);
 
-     let deleteBtn=document.createElement("button");
-     deleteBtn.className="btn btn-sm btn-danger";
-     deleteBtn.innerText="Delete";
-     deleteBtn.onclick=()=>deleteTask(t.id);
+     let dBtn=document.createElement("button");
+     dBtn.className="btn btn-sm btn-danger";
+     dBtn.innerText="Delete";
+     dBtn.onclick=()=>deleteTask(t.id);
 
-     li.appendChild(completeBtn);
-     li.appendChild(deleteBtn);
+     li.appendChild(cBtn);
+     li.appendChild(dBtn);
      list.appendChild(li);
+
    });
 
    document.getElementById("statTotal").innerText=total;
@@ -139,31 +156,37 @@ window.loadTasks = ()=>{
  });
 };
 
-/* ========= COMPLETE ========= */
+/* ===== COMPLETE ===== */
 window.toggleComplete=(id,current)=>{
  db.collection("tasks").doc(id).update({completed:!current});
 };
 
-/* ========= DELETE ========= */
+/* ===== DELETE ===== */
 window.deleteTask=id=>{
  if(confirm("Delete task?")){
   db.collection("tasks").doc(id).delete();
  }
 };
 
-/* ========= IMPORTANT ALERT ========= */
+/* ===== IMPORTANT ALERT ===== */
 function checkImportantToday(){
- let today=new Date().toISOString().split("T")[0];
+
+ let today=new Date();
+ today.setHours(0,0,0,0);
+
+ let tomorrow=new Date(today);
+ tomorrow.setDate(tomorrow.getDate()+1);
+
  db.collection("tasks")
- .where("dueDate","==",today)
+ .where("dueDate",">=",firebase.firestore.Timestamp.fromDate(today))
+ .where("dueDate","<",firebase.firestore.Timestamp.fromDate(tomorrow))
  .where("important","==",true)
  .where("completed","==",false)
  .get()
  .then(s=>{
    if(!s.empty){
-    showToast("⚠ Important tasks pending today!");
+     showToast("⚠ Important tasks pending today!");
    }
  });
 }
 checkImportantToday();
-
