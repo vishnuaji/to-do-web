@@ -100,4 +100,82 @@ text-align:left;
   border-color: #187bcd !important;
 }
 
+/* ===== THEME ===== */
+:root {
+  --primary: #1e90ff;
+  --primary-hover: #187bcd;
+  --bg-soft: #f4f8ff;
+  --danger: #ea5455;
+  --success: #28c76f;
+}
 
+/* ===== CARD LOOK ===== */
+.card {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* ===== BUTTON THEME ===== */
+.btn-custom {
+  background: var(--primary);
+  border: none;
+  color: white;
+}
+
+.btn-custom:hover {
+  background: var(--primary-hover);
+}
+
+/* ===== TASK SCROLL ===== */
+.task-scroll {
+  max-height: 350px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* ===== ANIMATION ===== */
+.fade-in {
+  animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(10px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* ===== OVERDUE TASK ===== */
+.task-overdue {
+  border-left: 5px solid var(--danger);
+  background: #fff5f5;
+}
+
+/* ===== IMPORTANT TASK ===== */
+.task-important {
+  border-left: 5px solid #ffb400;
+}
+
+/* ===== COMPLETED TASK ===== */
+.task-completed {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+/* ===== TOAST ===== */
+.toast-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--primary);
+  color: white;
+  padding: 14px 22px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: 9999;
+  animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(120%); }
+  to { transform: translateX(0); }
+}
