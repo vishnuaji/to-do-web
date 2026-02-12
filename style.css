@@ -83,7 +83,7 @@ text-align:left;
 }
 
 .task-scroll::-webkit-scrollbar-thumb {
-  background:#1e90ff;
+  background: #1e90ff;
   border-radius: 10px;
 }
 
