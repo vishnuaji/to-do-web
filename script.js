@@ -45,7 +45,8 @@ window.addTask = ()=>{
 
  let title=document.getElementById("taskTitle").value;
  let desc=document.getElementById("taskDesc").value;
- let date=document.getElementById("taskDate").value;
+ let rawDate=document.getElementById("taskDate").value;
+ let date=new Date(rawDate).toISOString().split("T")[0];
  let important=document.getElementById("taskImportant").checked;
 
  if(!title||!date){
