@@ -180,23 +180,66 @@ text-align:left;
   to { transform: translateX(0); }
 }
 
-body.dark {
+/*Dark mode */
+
+body.dark{
  background:#121212;
- color:white;
+ color:#e4e4e4;
 }
 
+/* Card */
 body.dark .card{
- background:#1e1e1e;
- color:white;
+ background:#1c1c1c;
+ color:#ffffff;
+ box-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
 
+/* Inputs */
 body.dark input,
 body.dark textarea{
- background:#2a2a2a;
- color:white;
- border-color:#444;
+ background:#262626;
+ color:#fff;
+ border:1px solid #3a3a3a;
 }
 
+body.dark input:focus,
+body.dark textarea:focus{
+ border-color:#1e90ff;
+ box-shadow:0 0 0 2px rgba(30,144,255,0.25);
+}
+
+/* Task List */
+body.dark li{
+ background:#242424;
+ color:#f1f1f1;
+}
+
+/* Scroll Area */
 body.dark .task-scroll{
- background:#1e1e1e;
+ background:#1c1c1c;
+}
+
+/* Buttons */
+body.dark button{
+ background:#1e90ff;
+ color:white;
+}
+
+body.dark button:hover{
+ background:#187bcd;
+}
+
+/* Important Task */
+body.dark .task-important{
+ background:#2c2616;
+}
+
+/* Overdue Task */
+body.dark .task-overdue{
+ background:#3a1f1f;
+}
+
+/* Completed Task */
+body.dark .task-completed{
+ opacity:0.55;
 }
