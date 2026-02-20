@@ -179,3 +179,24 @@ text-align:left;
   from { transform: translateX(120%); }
   to { transform: translateX(0); }
 }
+
+body.dark {
+ background:#121212;
+ color:white;
+}
+
+body.dark .card{
+ background:#1e1e1e;
+ color:white;
+}
+
+body.dark input,
+body.dark textarea{
+ background:#2a2a2a;
+ color:white;
+ border-color:#444;
+}
+
+body.dark .task-scroll{
+ background:#1e1e1e;
+}
