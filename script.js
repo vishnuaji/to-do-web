@@ -14,17 +14,39 @@ const homeScreen = document.getElementById("homeScreen");
 const addScreen = document.getElementById("addScreen");
 const viewScreen = document.getElementById("viewScreen");
 
-// function toggleDarkMode(){
-//  document.body.classList.toggle("dark");
-//  localStorage.setItem(
-//    "darkMode",
-//    document.body.classList.contains("dark")
-//  );
-// }
+/* ================= DARK MODE ================= */
 
-// if(localStorage.getItem("darkMode")==="true"){
-//  document.body.classList.add("dark");
-// }
+function toggleDarkMode(){
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("darkMode", isDark);
+  updateDarkIcon();
+}
+
+
+/* Auto Apply Saved / System Theme */
+(function(){
+  const saved = localStorage.getItem("darkMode");
+  if(
+    saved === "true" ||
+    (!saved &&
+     window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ){
+    document.body.classList.add("dark");
+  }
+  updateDarkIcon();
+})();
+
+
+/* Change Button Icon */
+function updateDarkIcon(){
+  const btn = document.getElementById("darkToggle");
+  if(!btn) return;
+  btn.textContent =
+    document.body.classList.contains("dark")
+      ? "Light Mode!"
+      : "Dark Mode!";
+}
 /* ===== TOAST ===== */
 function showToast(msg){
  let t=document.createElement("div");
