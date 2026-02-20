@@ -234,11 +234,11 @@ body.dark li div{
 }
 
 body.dark .task-important{
-  background:#332a0f !important;
+  background:#ffffff !important;
 }
 
 body.dark .task-overdue{
-  background:#3a1f1f !important;
+  background:#ffffff !important;
   border-left:5px solid #ea5455;
 }
 
