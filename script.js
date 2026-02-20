@@ -16,37 +16,48 @@ const viewScreen = document.getElementById("viewScreen");
 
 /* ================= DARK MODE ================= */
 
-function toggleDarkMode(){
+window.toggleDarkMode = function () {
+
   document.body.classList.toggle("dark");
+
   const isDark = document.body.classList.contains("dark");
+
   localStorage.setItem("darkMode", isDark);
-  updateDarkIcon();
-}
+
+  updateDarkButton();
+};
 
 
-/* Auto Apply Saved / System Theme */
-(function(){
+/* Apply Saved Theme On Load */
+(function () {
+
   const saved = localStorage.getItem("darkMode");
-  if(
+
+  if (
     saved === "true" ||
     (!saved &&
-     window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ){
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
     document.body.classList.add("dark");
   }
-  updateDarkIcon();
+
+  updateDarkButton();
+
 })();
 
 
-/* Change Button Icon */
-function updateDarkIcon(){
-  const btn = document.getElementById("darkToggle");
-  if(!btn) return;
+function updateDarkButton() {
+
+  const btn = document.querySelector('[onclick="toggleDarkMode()"]');
+
+  if (!btn) return;
+
   btn.textContent =
     document.body.classList.contains("dark")
-      ? "Light Mode!"
-      : "Dark Mode!";
+      ? "Light Mode ☀️"
+      : "Dark Mode 🌙";
 }
+
 /* ===== TOAST ===== */
 function showToast(msg){
  let t=document.createElement("div");
