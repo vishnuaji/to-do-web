@@ -3,13 +3,16 @@ margin:0;
 font-family:'Segoe UI',sans-serif;
 background:#eef2ea;
 min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+padding-top:80px;
 }
 
 .app{
-width:100%;
-max-width:1200px;
-margin:auto;
-padding:40px;
+width:90%;
+max-width:900px;
+text-align:center;
 }
 
 .title{
@@ -21,11 +24,10 @@ font-weight:600;
 
 .card{
 background:white;
-padding:50px;
-border-radius:20px;
+padding:45px;
+border-radius:18px;
 box-shadow:0 15px 45px rgba(0,0,0,0.12);
 width:100%;
-min-height:85vh;
 }
 
 button{
