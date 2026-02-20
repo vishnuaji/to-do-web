@@ -184,14 +184,36 @@ text-align:left;
 
 body.dark{
  background:#121212;
- color:#e4e4e4;
+ color:#ffffff;
+ transition:background .3s ease,color .3s ease;
+}
+
+body.dark .title{
+ color:#ffffff;
 }
 
 /* Card */
 body.dark .card{
- background:#1c1c1c;
- color:#ffffff;
+ background:#1e1e1e;
+ color:white;
  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+
+body.dark button{
+ background:#1e90ff;
+ color:white;
+}
+
+body.dark button:hover{
+ background:#187bcd;
+}
+
+body,
+.card,
+button,
+input,
+textarea{
+ transition:all .25s ease;
 }
 
 /* Inputs */
