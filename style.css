@@ -1,7 +1,7 @@
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
-background:#eef2ea;
+background:#0f0f0f;
 min-height:100vh;
 display:flex;
 justify-content:center;
@@ -180,7 +180,7 @@ text-align:left;
 
 body.dark{
   background:#121212;
-  color:#ffffff;
+  color:#0f0f0f;
   transition:background .3s ease,color .3s ease;
 }
 
