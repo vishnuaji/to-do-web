@@ -3,12 +3,8 @@ margin:0;
 font-family:'Segoe UI',sans-serif;
 background:#eef2ea;
 min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:30px;
+padding:40px;
 }
-
 .app{
 width:90%;
 max-width:850px;
