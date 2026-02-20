@@ -14,17 +14,17 @@ const homeScreen = document.getElementById("homeScreen");
 const addScreen = document.getElementById("addScreen");
 const viewScreen = document.getElementById("viewScreen");
 
-function toggleDarkMode(){
- document.body.classList.toggle("dark");
- localStorage.setItem(
-   "darkMode",
-   document.body.classList.contains("dark")
- );
-}
+// function toggleDarkMode(){
+//  document.body.classList.toggle("dark");
+//  localStorage.setItem(
+//    "darkMode",
+//    document.body.classList.contains("dark")
+//  );
+// }
 
-if(localStorage.getItem("darkMode")==="true"){
- document.body.classList.add("dark");
-}
+// if(localStorage.getItem("darkMode")==="true"){
+//  document.body.classList.add("dark");
+// }
 /* ===== TOAST ===== */
 function showToast(msg){
  let t=document.createElement("div");
