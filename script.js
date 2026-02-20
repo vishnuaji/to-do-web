@@ -54,8 +54,8 @@ function updateDarkButton() {
 
   btn.textContent =
     document.body.classList.contains("dark")
-      ? "Light Mode ☀️"
-      : "Dark Mode 🌙";
+      ? "Light Mode!"
+      : "Dark Mode!";
 }
 
 /* ===== TOAST ===== */
