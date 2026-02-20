@@ -100,7 +100,6 @@ text-align:left;
   border-color: #187bcd !important;
 }
 
-/* ===== THEME ===== */
 :root {
   --primary: #1e90ff;
   --primary-hover: #187bcd;
@@ -109,14 +108,12 @@ text-align:left;
   --success: #28c76f;
 }
 
-/* ===== CARD LOOK ===== */
 .card {
   border-radius: 16px;
   border: none;
   box-shadow: 0 12px 30px rgba(0,0,0,0.08);
 }
 
-/* ===== BUTTON THEME ===== */
 .btn-custom {
   background: var(--primary);
   border: none;
@@ -127,14 +124,12 @@ text-align:left;
   background: var(--primary-hover);
 }
 
-/* ===== TASK SCROLL ===== */
 .task-scroll {
   max-height: 350px;
   overflow-y: auto;
   scroll-behavior: smooth;
 }
 
-/* ===== ANIMATION ===== */
 .fade-in {
   animation: fadeIn 0.35s ease;
 }
@@ -144,24 +139,20 @@ text-align:left;
   to { opacity:1; transform: translateY(0); }
 }
 
-/* ===== OVERDUE TASK ===== */
 .task-overdue {
   border-left: 5px solid var(--danger);
   background: #fff5f5;
 }
 
-/* ===== IMPORTANT TASK ===== */
 .task-important {
   border-left: 5px solid #ffb400;
 }
 
-/* ===== COMPLETED TASK ===== */
 .task-completed {
   opacity: 0.6;
   text-decoration: line-through;
 }
 
-/* ===== TOAST ===== */
 .toast-box {
   position: fixed;
   top: 20px;
@@ -183,125 +174,109 @@ text-align:left;
 /*Dark mode */
 
 body.dark{
- background:#121212;
- color:#ffffff;
- transition:background .3s ease,color .3s ease;
+  background:#121212;
+  color:#ffffff;
+  transition:background .3s ease,color .3s ease;
 }
 
 body.dark .title{
- color:#ffffff;
+  color:#ffffff;
 }
 
-/* Card */
 body.dark .card{
- background:#1e1e1e;
- color:white;
- box-shadow:0 0 25px rgba(30,144,255,0.15);
+  background:#1c1c1c;
+  color:#ffffff;
+  box-shadow:0 12px 35px rgba(0,0,0,0.6);
 }
 
-body.dark button{
- background:#1e90ff;
- color:white;
-}
-
-body.dark button:hover{
- background:#187bcd;
-}
-
-body,
-.card,
-button,
-input,
-textarea{
- transition:all .25s ease;
-}
-
-/* Inputs */
 body.dark input,
 body.dark textarea{
- background:#262626;
- color:#fff;
- border:1px solid #3a3a3a;
-}
-
-body.dark input:focus,
-body.dark textarea:focus{
- border-color:#1e90ff;
- box-shadow:0 0 0 2px rgba(30,144,255,0.25);
-}
-
-/* Task List */
-body.dark li{
- background:#242424;
- color:#f1f1f1;
-}
-
-/* Scroll Area */
-body.dark .task-scroll{
- background:#1c1c1c;
-}
-
-/* Buttons */
-body.dark button{
- background:#1e90ff;
- color:white;
-}
-
-body.dark button:hover{
- background:#187bcd;
-}
-
-/* Important Task */
-body.dark .task-important{
- background:#2c2616;
-}
-
-/* Overdue Task */
-body.dark .task-overdue{
- background:#3a1f1f;
-}
-
-/* Completed Task */
-body.dark .task-completed{
- opacity:0.55;
-}
-
-/* ===== DARK MODE TASK FIX ===== */
-
-body.dark li{
-  background:#2a2a2a;
+  background:#262626;
   color:#ffffff;
   border:1px solid #3a3a3a;
 }
 
-/* Fix task text visibility */
-body.dark li b{
-  color:#ffffff;
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+  color:#aaaaaa;
 }
 
-/* Scroll container */
+body.dark input:focus,
+body.dark textarea:focus{
+  border-color:#1e90ff;
+  box-shadow:0 0 0 2px rgba(30,144,255,0.25);
+}
+
+body.dark button{
+  background:#1e90ff;
+  color:white;
+}
+
+body.dark button:hover{
+  background:#187bcd;
+}
+
 body.dark .task-scroll{
-  background:#1e1e1e;
+  background:#1a1a1a !important;
   border-color:#444;
 }
 
-/* Stats numbers */
+body.dark ul li{
+  background:#2a2a2a !important;
+  color:#ffffff !important;
+  border:1px solid #3a3a3a;
+}
+
+body.dark li b,
+body.dark li span,
+body.dark li div{
+  color:#ffffff !important;
+}
+
+body.dark .task-important{
+  background:#332a0f !important;
+}
+
+body.dark .task-overdue{
+  background:#3a1f1f !important;
+  border-left:5px solid #ea5455;
+}
+
+body.dark .task-completed{
+  opacity:0.55;
+}
+
 body.dark h5{
   color:#ffffff;
 }
 
-/* Labels */
 body.dark small{
   color:#cfcfcf;
 }
 
-/* Date input */
 body.dark input[type="date"]{
   background:#262626;
   color:white;
 }
 
-/* Delete button visibility */
-body.dark .btn-danger{
-  border-color:#ff6b6b;
+body.dark .task-scroll::-webkit-scrollbar-thumb{
+  background:#1e90ff;
+}
+
+body.dark .toast-box{
+  background:#1e90ff;
+  color:white;
+}
+
+body,
+.card,
+li,
+button,
+input,
+textarea{
+  transition:
+    background .25s ease,
+    color .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
