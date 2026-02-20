@@ -285,3 +285,31 @@ textarea{
     border-color .25s ease,
     box-shadow .25s ease;
 }
+
+body{
+  background:#eef2ea !important;
+  color:#212529;
+}
+
+body.dark{
+  background:#0f0f0f !important;
+  color:#ffffff;
+}
+
+.title{
+  color:inherit;
+}
+
+.card{
+  background:#ffffff;
+  color:inherit;
+}
+
+body.dark .card{
+  background:#1c1c1c;
+}
+
+body,
+.card{
+  transition:background .3s ease,color .3s ease;
+}
