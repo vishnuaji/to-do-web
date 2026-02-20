@@ -17,22 +17,15 @@ const viewScreen = document.getElementById("viewScreen");
 /* ================= DARK MODE ================= */
 
 window.toggleDarkMode = function () {
-
   document.body.classList.toggle("dark");
-
   const isDark = document.body.classList.contains("dark");
-
   localStorage.setItem("darkMode", isDark);
-
   updateDarkButton();
 };
 
 
-/* Apply Saved Theme On Load */
 (function () {
-
   const saved = localStorage.getItem("darkMode");
-
   if (
     saved === "true" ||
     (!saved &&
@@ -40,25 +33,19 @@ window.toggleDarkMode = function () {
   ) {
     document.body.classList.add("dark");
   }
-
   updateDarkButton();
-
 })();
 
 
 function updateDarkButton() {
-
   const btn = document.querySelector('[onclick="toggleDarkMode()"]');
-
   if (!btn) return;
-
   btn.textContent =
     document.body.classList.contains("dark")
-      ? "Light Mode!"
-      : "Dark Mode!";
+      ? "Light Mode"
+      : "Dark Mode";
 }
 
-/* ===== TOAST ===== */
 function showToast(msg){
  let t=document.createElement("div");
  t.className="toast-box";
@@ -67,7 +54,6 @@ function showToast(msg){
  setTimeout(()=>t.remove(),3000);
 }
 
-/* ===== NAV ===== */
 window.showAddTask=()=>{
  homeScreen.classList.add("d-none");
  addScreen.classList.remove("d-none");
