@@ -1,8 +1,8 @@
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
-background:#121212;
-min-height:100vh;
+background:#0f0f0f !important;
+color:#212529;min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:flex-start;
@@ -20,6 +20,7 @@ text-align:center;
 margin-bottom:40px;
 font-size:32px;
 font-weight:600;
+color:inherit;
 }
 
 .card{
@@ -29,6 +30,10 @@ border-radius:18px;
 box-shadow:0 15px 45px rgba(0,0,0,0.12);
 width:100%;
 }
+/* .card{
+  background:#ffffff;
+  color:inherit;
+} */
 
 button{
 width:100%;
@@ -286,23 +291,9 @@ textarea{
     box-shadow .25s ease;
 }
 
-body{
-  background:#0f0f0f !important;
-  color:#212529;
-}
-
 body.dark{
   background:#0f0f0f !important;
   color:#ffffff;
-}
-
-.title{
-  color:inherit;
-}
-
-.card{
-  background:#ffffff;
-  color:inherit;
 }
 
 body.dark .card{
