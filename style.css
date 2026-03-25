@@ -9,6 +9,19 @@ align-items:flex-start;
 padding-top:80px;
 background: url("dark-bg.jpg") no-repeat center center fixed;
 background-size: cover;
+min-height:100vh;
+padding-top:80px;
+}
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background: rgba(0,0,0,0.35);
+z-index:-1;
 }
 
 .app{
@@ -26,16 +39,18 @@ color:inherit;
 }
 
 .card{
-background:white;
+background: rgba(255,255,255,0.9);
 padding:45px;
 border-radius:18px;
 box-shadow:0 15px 45px rgba(0,0,0,0.12);
-width:100%;
+width:100%; 
+backdrop-filter: blur(10px);
 }
-/* .card{
-  background:#ffffff;
-  color:inherit;
-} */
+
+body.dark .card{
+background: rgba(30,30,30,0.85);
+color:white;
+}
 
 button{
 width:100%;
